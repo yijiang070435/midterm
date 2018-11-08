@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-  	<script src="http://d3js.org/d3.v3.min.js"></script>
+  	<script src="https://d3js.org/d3.v4.min.js"></script>
   	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"crossorigin="anonymous"></script>
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"crossorigin="anonymous"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"crossorigin="anonymous"></script>
 	<link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"crossorigin="anonymous">
 </head>
 <style>
-
+.blue{
+  float:left;
+  width:600px;
+  background:#ffffff;
+  height:500px;
+}
+.red{
+  margin-left:700px;
+  background:#ffffff;
+  height:500px;
+}
 </style>
 <body>
 	
@@ -52,7 +62,7 @@
   	</div>
     <div class="btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-light active">
-        <input type="checkbox" checked autocomplete="off"> Confirm
+        <input type="checkbox" checked autocomplete="off" "> Confirm
       </label>
     </div>
     
@@ -68,70 +78,79 @@
       <label class="text-white" for="sel4" >Month</label>
       <select  class="form-control input-sm" id="sel4">
           <option value="" disabled selected>Select Month</option>
-          <option value="17">5</option>
-          <option value="18">6</option>
-          <option value="19">7</option>
+
+          <option value="2015-05">2015-05</option>
+          <option value="2015-06">2015-06</option>
+          <option value="2015-07">2015-07</option>
+          <option value="2015-08">2015-08</option>
+          <option value="2015-09">2015-09</option>
+          <option value="2015-10">2015-10</option>
+          <option value="2015-11">2015-11</option>
+          <option value="2015-12">2015-12</option>
+          <option value="2016-01">2016-01</option>
+          <option value="2016-02">2016-02</option>
+          <option value="2016-03">2016-03</option>
+          <option value="2016-04">2016-04</option>
+          <option value="2016-05">2016-05</option>
+
        </select>
     </div>
     <div class="form-group">
       <label class="text-white" for="sel5">car type</label>
       <select class="form-control input-sm" id="sel5">
           <option value="" disabled selected>Select Car Type</option>
-          <option value="20">all types</option>
-          <option value="21">1</option>
-          <option value="22">2</option>
-          <option value="23">2P</option>
-          <option value="24">3</option>
-          <option value="25">4</option>
-          <option value="26">5</option>
-          <option value="27">6</option>
+          <option value="all types">all types</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">2P</option>
+          <option value="4">3</option>
+          <option value="5">4</option>
+          <option value="6">5</option>
+          <option value="7">6</option>
        </select>
     </div>
     <div class="form-group">
       <label class="text-white" for="sel6" >gate name</label>
       <select class="form-control input-sm" id="sel6">
           <option value="" disabled selected>Select Gate Name</option>
-          <option value="28">camping0</option>
-          <option value="29">camping0</option>
-          <option value="30">camping2</option>
-          <option value="31">camping3</option>
-          <option value="32">camping6</option>
-          <option value="33">camping7</option>
-          <option value="34">camping8</option>
-          <option value="35">entrance1</option>
-          <option value="36">entrance2</option>
-          <option value="37">entrance3</option>
-          <option value="38">entrance4</option>
-          <option value="39">gate3</option>
-          <option value="40">gate4</option>
-          <option value="41">gate8</option>
-          <option value="42">general-gate1</option>
-          <option value="43">general-gate2</option>
-          <option value="44">general-gate3</option>
-          <option value="45">general-gate4</option>
-          <option value="46">general-gate5</option>
-          <option value="47">general-gate6</option>
-          <option value="48">general-gate7</option>
-          <option value="49">ranger-base</option>
-          <option value="50">ranger-stop0</option>
-          <option value="51">ranger-stop2</option>
-          <option value="52">ranger-stop3</option>
-          <option value="53">ranger-stop5</option>
+          <option value="camping0">camping0</option>
+          <option value="camping1">camping1</option>
+          <option value="camping2">camping2</option>
+          <option value="camping3">camping3</option>
+          <option value="camping6">camping6</option>
+          <option value="camping7">camping7</option>
+          <option value="camping8">camping8</option>
+          <option value="entrance1">entrance1</option>
+          <option value="entrance2">entrance2</option>
+          <option value="entrance3">entrance3</option>
+          <option value="entrance4">entrance4</option>
+          <option value="gate3">gate3</option>
+          <option value="gate4">gate4</option>
+          <option value="gate8">gate8</option>
+          <option value="general-gate1">general-gate1</option>
+          <option value="general-gate2">general-gate2</option>
+          <option value="general-gate3">general-gate3</option>
+          <option value="general-gate4">general-gate4</option>
+          <option value="general-gate5">general-gate5</option>
+          <option value="general-gate6">general-gate6</option>
+          <option value="general-gate7">general-gate7</option>
+          <option value="ranger-base">ranger-base</option>
+          <option value="ranger-stop0">ranger-stop0</option>
+          <option value="ranger-stop2">ranger-stop2</option>
+          <option value="ranger-stop3">ranger-stop3</option>
+          <option value="ranger-stop5">ranger-stop5</option>
        </select>
     </div>
     <div class="btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-light active">
-        <input type="checkbox" checked autocomplete="off"> Confirm
-      </label>
+      <button type="button" onclick="Click()">Confirm</button>
     </div>
+
   </nav>
-  <img src="MapLargeLabels.jpg" width="720" height="720">
-
-
-<script type="text/javascript">
-console.log()
+  <svg width="600" height="600"></svg>
+  <div class="blue"><img src="MapLargeLabels.jpg" width="600" height="600"></div> 
+  <div class="red"><script type="text/javascript" src="traffic.js"></script></div> 
 
 	
-</script>
+
 </body>
 </html>
