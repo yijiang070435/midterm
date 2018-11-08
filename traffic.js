@@ -36,11 +36,12 @@ function drawTraffic(data) {
     .rollup(function(v) { return v.length; })
     .entries(dataFiltered);
     
-    
+    console.log(nested);
     var keys = ["1", "2", "2P", "3", "4", "5", "6"];
-    x.domain(nested.map(function(d) { return d.key.substring(5, 10); }));
-
-    y.domain([0, 8]);
+    var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
+    x.domain(days.map(function(d) { console.log(month.substring(5,7)+"-"+d);return month.substring(5,7)+"-"+d; }));
+    console.log(x);
+    y.domain([0, d3.max(nested, function(d) { return d.values[0].values[0].value; })+3]);
     console.log(1);
     z.domain(keys);
 
