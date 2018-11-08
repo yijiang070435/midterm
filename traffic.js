@@ -51,7 +51,14 @@ function drawTraffic(data) {
       .attr("x", function(d) { console.log(d.key.substring(5, 10));return x(d.key.substring(5, 10)); })
       .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(d.values[0].values[0].value); })
-      .attr("height", function(d) { return height - y(d.values[0].values[0].value); });
+      .attr("height", function(d) { return height - y(d.values[0].values[0].value); })
+      .on("mouseover",function(d,i){
+                d3.select(this)
+                .style('fill','pink')})
+      .on("mouseleave", function(d){ 
+                d3.select(this)
+                .style('fill','steelblue')
+              })
   }
   else{
     var dataFiltered= data.filter(function (d) { return d.month == month && d["gate-name"]==gate;});
