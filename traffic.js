@@ -11,7 +11,7 @@ var x = d3.scaleBand().range([0, width]).padding(0.2).round(true);
 //var x = d3.scaleOrdinal().range([0, width], .05);
 var y = d3.scaleLinear().rangeRound([height, 0]);
 var z = d3.scaleOrdinal()
-.range(["black", "green", "steelblue", "red", "orange", "purple", "gray"]);
+.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 var data;
 d3.csv("Lekagul_Sensor_Data.csv", function(d, i, columns) {
   d.Timestamp=d.Timestamp.split(" ")[0];
@@ -40,7 +40,7 @@ function drawTraffic(data) {
     var keys = ["1", "2", "2P", "3", "4", "5", "6"];
     x.domain(nested.map(function(d) { return d.key.substring(5, 10); }));
 
-    y.domain([0, d3.max(nested, function(d) { return d.values[0].values[0].value; })]);
+    y.domain([0, 8]);
     console.log(1);
     z.domain(keys);
 
