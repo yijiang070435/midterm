@@ -1,12 +1,10 @@
-var svg = d3.select("svg"),
-margin = {top: 20, right: 20, bottom: 30, left: 40},
+var svg = d3.select("#bar"),
+margin = {top: 20, right: 40, bottom: 30, left: 150},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
+var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-var month="2015-05";
-var type="1";
-var gate="camping0";
-var x = d3.scaleBand().range([0, width]).padding(0.2).round(true);
+var x = d3.scaleBand().range([0, width-20]).padding(0.2).round(true);
 //var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
 //var x = d3.scaleOrdinal().range([0, width], .05);
 var y = d3.scaleLinear().rangeRound([height, 0]);
@@ -40,16 +38,16 @@ function drawTraffic(data) {
     var keys = ["1", "2", "2P", "3", "4", "5", "6"];
     var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     x.domain(days.map(function(d) { console.log(month.substring(5,7)+"-"+d);return month.substring(5,7)+"-"+d; }));
-    console.log(x);
+   
     y.domain([0, d3.max(nested, function(d) { return d.values[0].values[0].value; })+3]);
-    console.log(1);
+   
     z.domain(keys);
 
     g.selectAll("bar")
       .data(nested)
       .enter().append("rect")
       .style("fill", "steelblue")
-      .attr("x", function(d) { console.log(d.key.substring(5, 10));return x(d.key.substring(5, 10)); })
+      .attr("x", function(d) { return x(d.key.substring(5, 10)); })
       .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(d.values[0].values[0].value); })
       .attr("height", function(d) { return height - y(d.values[0].values[0].value); })
@@ -58,10 +56,19 @@ function drawTraffic(data) {
                 .style('fill','pink')})
       .on("mouseleave", function(d){ 
                 d3.select(this)
-                .style('fill','steelblue')
-              })
+                .style('fill','steelblue')})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html(d.key.substring(0, 10)+" : "+d.values[0].values[0].value)})
+       .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
   }
   else{
+    var keys = ["1", "2", "2P", "3", "4", "5", "6"];
+    var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     var dataFiltered= data.filter(function (d) { return d.month == month && d["gate-name"]==gate;});
     var nested = d3.nest()
     .key(function(d){return d.Timestamp;})
@@ -71,10 +78,10 @@ function drawTraffic(data) {
     .rollup(function(v) { return v.length; })
     .entries(dataFiltered);
     
-    x.domain(nested.map(function(d) { return d.key.substring(5, 10); }));
+    x.domain(days.map(function(d) { console.log(month.substring(5,7)+"-"+d);return month.substring(5,7)+"-"+d; }));
     //y.domain([0, d3.max(nested, function(d) { return d.values[0].values[0].value; })]);
     
-    var keys = ["1", "2", "2P", "3", "4", "5", "6"];
+
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
       
@@ -94,12 +101,30 @@ function drawTraffic(data) {
     .enter().append("g")
     .attr("fill", function(d) { return z(d.key); })
     .selectAll("rect")
-    .data(function(d) { return d; })
+    .data(function(d) {return d; })
     .enter().append("rect")
     .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .attr("width", x.bandwidth());
+    .attr("width", x.bandwidth())
+    .on("mouseover",function(d,i){
+                d3.select(this)
+                .style('opacity','0.5')})
+    .on("mouseleave", function(d,i){ 
+                console.log(d.m)
+                d3.select(this)
+                .style('opacity','1')
+                })
+    .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
+       .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+    
+
   }
 g.append("g")
 .attr("class", "axis")
@@ -130,13 +155,13 @@ if(type=="all types")
   .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
   legend.append("rect")
-  .attr("x", width - 19)
+  .attr("x", width - 10)
   .attr("width", 19)
   .attr("height", 19)
   .attr("fill", z);
 
   legend.append("text")
-  .attr("x", width - 24)
+  .attr("x", width - 14)
   .attr("y", 9.5)
   .attr("dy", "0.32em")
   .text(function(d) { return d; });
@@ -147,7 +172,7 @@ function Click(){
   month=document.getElementById("sel4").value;
   type= document.getElementById("sel5").value;
   gate=document.getElementById("sel6").value;
-  d3.selectAll("g").remove();
+  d3.select("#bar").selectAll('g').remove();
   console.log(month, type, gate);
   drawTraffic(data);
 }
