@@ -1,5 +1,5 @@
 var svg = d3.select("#bar"),
-margin = {top: 20, right: 40, bottom: 30, left: 40},
+margin = {top: 20, right: 40, bottom: 30, left: 60},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
@@ -22,8 +22,8 @@ d3.csv("Lekagul_Sensor_Data.csv", function(d, i, columns) {
 
 
 function drawTraffic(data) {
-  console.log(data);
-  var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  var g = svg.append("g").attr("transform", "translate(" + 60 + "," + 20 + ")");
 
   if(type!="all types"&&month!=0&&gate!=0){
     var dataFiltered= data.filter(function (d) { return d.month == month && d["car-type"]==type && d["gate-name"]==gate;});
