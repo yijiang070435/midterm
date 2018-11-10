@@ -32,7 +32,11 @@
   background:#ffffff;
   height:720px;
 }
-
+path.spiral {
+        fill: none;
+        stroke: #ee8d18;
+        stroke-width: 3px;
+      }
 .toolTip {
         position: absolute;
         display: none;
@@ -51,9 +55,9 @@
       <label class="text-white" for="sel1" >Month</label>
       <select class="form-control input-sm" id="sel1">
           <option value="" disabled selected>Select Month</option>
-          <option value="0">4</option>
-          <option value="1">8</option>
-          <option value="2">12</option>
+          <option value="4" onclick="CLICK()">4</option>
+          <option value="8" onclick="CLICK()">8</option>
+          <option value="12" onclick="CLICK()">12</option>
        </select>
     </div>
   	<div class="form-group">
@@ -85,7 +89,7 @@
     
   </nav>
    <div class="pink"><img src="sensor.jpg" width="720" height="720"></div> 
-    <svg id="chart" width="1200" height="720"> </svg>
+    <svg id="chart" width="720" height="720"> </svg>
     <script type="text/javascript" src="air.js"></script>
  
 
