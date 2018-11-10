@@ -25,7 +25,7 @@ function drawTraffic(data) {
   console.log(data);
   var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  if(type!="all types"){
+  if(type!="all types"&&month!=0&&gate!=0){
     var dataFiltered= data.filter(function (d) { return d.month == month && d["car-type"]==type && d["gate-name"]==gate;});
     var nested = d3.nest()
     .key(function(d){return d.Timestamp;})
@@ -65,8 +65,24 @@ function drawTraffic(data) {
                 .html(d.key.substring(0, 10)+" : "+d.values[0].values[0].value)})
        .on("mouseout", function(d){ 
                 tooltip.style("display", "none");})
+       g.append("g")
+.attr("class", "axis")
+.attr("transform", "translate(0," + height + ")")
+.call(d3.axisBottom(x));
+
+g.append("g")
+.attr("class", "axis")
+.call(d3.axisLeft(y).ticks(null, "s"))
+.append("text")
+.attr("x", 2)
+.attr("y", y(y.ticks().pop()) + 0.5)
+.attr("dy", "0.3em")
+.attr("fill", "black")
+.attr("font-weight", "bold")
+.attr("text-anchor", "start")
+.text("Car Number");
   }
-  else{
+  if(type=="all types"&&month!=0&&gate!=0){
     var keys = ["1", "2", "2P", "3", "4", "5", "6"];
     var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     var dataFiltered= data.filter(function (d) { return d.month == month && d["gate-name"]==gate;});
@@ -122,10 +138,7 @@ function drawTraffic(data) {
                 .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
        .on("mouseout", function(d){ 
                 tooltip.style("display", "none");})
-    
-
-  }
-g.append("g")
+      g.append("g")
 .attr("class", "axis")
 .attr("transform", "translate(0," + height + ")")
 .call(d3.axisBottom(x));
@@ -141,6 +154,9 @@ g.append("g")
 .attr("font-weight", "bold")
 .attr("text-anchor", "start")
 .text("Car Number");
+    
+
+  }
 
 if(type=="all types")
 {
