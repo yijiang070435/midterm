@@ -140,7 +140,7 @@ g.append("g")
 .attr("fill", "black")
 .attr("font-weight", "bold")
 .attr("text-anchor", "start")
-.text("Population");
+.text("Car Number");
 
 if(type=="all types")
 {
