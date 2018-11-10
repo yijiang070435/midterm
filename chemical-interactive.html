@@ -39,7 +39,7 @@ rect:hover {  fill:blue; }
 <body>
 <div id='dashboard'>
 </div>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.v4.min.js"></script>
 <script>
 function dashboard(id, fData){
     var barColor = 'steelblue';
@@ -237,6 +237,9 @@ function dashboard(id, fData){
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
 }
+</script>
+
+<script>
 
 
    d3.csv("chemical1.csv", function(d, i, columns) {
@@ -262,11 +265,8 @@ function dashboard(id, fData){
      
       return d;
     },function(error,data){
-      
-      dashboard('#dashboard',data)
+        console.log(data);      
+      dashboard('#dashboard',data);
 
-    })
-
-
-;
+    });
 </script>
