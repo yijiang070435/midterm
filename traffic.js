@@ -1,5 +1,5 @@
 var svg = d3.select("#bar"),
-margin = {top: 20, right: 40, bottom: 30, left: 150},
+margin = {top: 20, right: 40, bottom: 30, left: 40},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
@@ -111,7 +111,6 @@ function drawTraffic(data) {
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){ 
-                console.log(d.m)
                 d3.select(this)
                 .style('opacity','1')
                 })
