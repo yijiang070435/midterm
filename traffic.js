@@ -88,14 +88,13 @@ function drawTraffic(data) {
     var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     var dataFiltered= data.filter(function (d) { return d.month == month;});
     var nested = d3.nest()
-    .key(function(d){return d.Timestamp;})
+    .key(function(d){return [d.Timestamp,d["car-type"]];})
     .key(function(d){ return d["car-type"];})
     .sortKeys(d3.ascending)
     .key(function(d){return d["gate-name"];})
     //.rollup(function(v) { return {total: v.length}; })
     .entries(dataFiltered);
     
-    console.log(nested);
 
     x.domain(days.map(function(d) { return month.substring(5,7)+"-"+d; }));
     
@@ -157,6 +156,8 @@ d3.selectAll("g.x g.tick")
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth()-2)
     .on("mouseover",function(d,i){
+      var type=d.data.key.substring(11,13);
+      console.log(d.data.values[0].values);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){
@@ -195,6 +196,59 @@ d3.selectAll("g.x g.tick")
   .text(function(d) { return d; });
 
 }
+function drawpie(data)
+  {
+    d3.select("#chart").selectAll(".arc").remove();
+    d3.select("#chart").selectAll(".text1").remove();
+    d3.select("#chart").selectAll(".rect1").remove();
+    d3.select("#chart").selectAll(".text2").remove();
+
+    var name=["Methylosmolene","Chlorodinine","AGOC-3A","Appluimonia"];
+    var data = [a,b,c,d];
+    var total_number=a+b+c+d;
+    var percent=[a/total_number*100,b/total_number*100,c/total_number*100,d/total_number*100];
+    var g = d3.select("#chart").selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+    g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color_pie(d.data); })
+      .attr("transform", "translate(" + (600) + "," + (216) + ")");
+    g.append("text")
+      .classed("class","text_data")
+      .attr("transform", function(d) { var f=labelArc.centroid(d);
+        return "translate(" + (f[0]+600)+","+(f[1]+216) + ")"; })
+      .attr("dy", ".35em")
+      .text(function(d) { return d.data.toFixed(2); });
+  for(i=0;i<4;i++)
+  {
+  d3.select("#chart").append("rect")
+  .attr("x", width-110)
+  .attr("y",height-160-13*i)
+  .attr("width", 11)
+  .attr("height", 11)
+  .classed("class","rect1")
+  .style("fill", color_pie(data[i]));
+
+g.append("text")
+  .attr("x", width-90)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .style("text-anchor", "start")
+  .classed("class","text2")
+  .text(name[i])
+
+ g.append("text")
+  .attr("x", width+530)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .classed("class","text1")
+  .text(percent[i].toFixed(2)+"%")
+}
+   
+  }
 
 function Click(){
   month=document.getElementById("sel4").value;
