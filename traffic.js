@@ -105,7 +105,8 @@ function drawTraffic(data) {
       console.log(d);
       var i = d.values.length;
       while (i--) 
-        if (d.values[i].key == key)  break;
+        if (d.values[i].key == key)  
+          {d.type=d.values[i].key;break;}
       
 
       
