@@ -1,8 +1,8 @@
   
 var margin = {top:6,bottom:6,left:6,right:6};
 var svg = d3.select("#chart").append("svg")
-      .attr("width", width + margin.right + margin.left)
-      .attr("height", height + margin.left + margin.right).append("g")
+      .attr("width", 960 + margin.right + margin.left)
+      .attr("height", 432 + margin.left + margin.right).append("g")
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var width = 432,
@@ -96,8 +96,8 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+360; 
-        d.y = posOnLine.y+360;     
+        d.x = posOnLine.x+216; 
+        d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; 
         return d.x;})
       .attr("y", function(d){return d.y;})
@@ -340,6 +340,8 @@ function drawair(Month){
     d3.select("#chart").selectAll(".arc").remove();
     d3.select("#chart").selectAll(".text1").remove();
     d3.select("#chart").selectAll(".rect1").remove();
+    d3.select("#chart").selectAll(".text2").remove();
+
     var name=["Methylosmolene","Chlorodinine","AGOC-3A","Appluimonia"];
     var data = [a,b,c,d];
     var total_number=a+b+c+d;
@@ -361,24 +363,26 @@ function drawair(Month){
       .text(function(d) { return d.data.toFixed(2); });
   for(i=0;i<4;i++)
   {
-  g.append("rect")
-  .attr("x", width+120)
-  .attr("y",height-216-12*i)
+  d3.select("#chart").append("rect")
+  .attr("x", width+420)
+  .attr("y",height-160-13*i)
   .attr("width", 11)
   .attr("height", 11)
   .classed("class","rect1")
   .style("fill", color_pie(data[i]));
 
-  g.append("text")
-  .attr("x", width+156)
-  .attr("y",height-210-12*i)
-  .attr("dy", "0.32em")
-  .classed("class","text1")
+g.append("text")
+  .attr("x", width+435)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .style("text-anchor", "start")
+  .classed("class","text2")
   .text(name[i])
-  g.append("text")
-  .attr("x", width+192)
-  .attr("y",height-192-12*i)
-  .attr("dy", "0.32em")
+
+ g.append("text")
+  .attr("x", width+530)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
   .classed("class","text1")
   .text(percent[i].toFixed(2)+"%")
 }
@@ -391,7 +395,8 @@ function CLICK()
   Month=document.getElementById("sel1").value;
   d3.select("#chart").selectAll('rect').remove();
   d3.select("#chart").selectAll(".arc").remove();
-    d3.select("#chart").selectAll(".text1").remove();
+    d3.select("g").selectAll(".text1").remove();
+    d3.select("g").selectAll(".text2").remove();
     d3.select("#chart").selectAll(".rect1").remove();
   d3.select("#chart").selectAll('text').remove();
 
