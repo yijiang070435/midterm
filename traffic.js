@@ -140,15 +140,15 @@ function drawTraffic(data) {
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "inline-block")
                 .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
-       .on("mouseout", function(d){ 
+    .on("mouseout", function(d){ 
                 tooltip.style("display", "none");})
       g.append("g")
-.attr("class", "axis")
+.attr("class", "x axis")
 .attr("transform", "translate(0," + height + ")")
 .call(d3.axisBottom(x));
 
 g.append("g")
-.attr("class", "axis")
+.attr("class", "y axis")
 .call(d3.axisLeft(y).ticks(null, "s"))
 .append("text")
 .attr("x", 4)
