@@ -13,7 +13,7 @@ var width = 720,
 var radius = 500 / 2;
 
 var color_pie = d3.scaleOrdinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b"]);
+    .range(["#ECDB84", "#EEC85D", "#EEA760", "#EA753C"]);
 
 var arc = d3.arc()
     .outerRadius(radius - 10)
