@@ -157,7 +157,6 @@ d3.selectAll("g.x g.tick")
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth()-2)
     .on("mouseover",function(d,i){
-        console.log(i);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){
