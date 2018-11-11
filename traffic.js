@@ -91,7 +91,7 @@ function drawTraffic(data) {
     .key(function(d){return d.Timestamp;})
     .key(function(d){ return d["car-type"];})
     .sortKeys(d3.ascending)
-    //.key(function(d){return d["gate-name"];})
+    .key(function(d){return d["gate-name"];})
     //.rollup(function(v) { return {total: v.length}; })
     .entries(dataFiltered);
     
@@ -108,9 +108,7 @@ function drawTraffic(data) {
         if (d.values[i].key == key)  break;
       
 
-      if(i!=-1){
-        console.log(d.values[i].values.length);
-      }
+      
       return i!=-1?  d.values[i].values.length : 0;}) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
@@ -128,6 +126,7 @@ function drawTraffic(data) {
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth())
     .on("mouseover",function(d,i){
+      console.log(d);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){ 
