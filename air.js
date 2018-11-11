@@ -43,7 +43,7 @@ function drawair(Month){
     var path = d3.select("#chart").append("path").datum(points)
       .attr("id", "spiral").attr("d", spiral)
       .style("fill", "none").style("stroke", "steelblue")
-      .attr("transform", "translate(" + (216) + "," + (216) + ")");
+      .attr("transform", "translate(" + (266) + "," + (216) + ")");
 
     var someData = [];
     if(Month==4){
@@ -96,7 +96,7 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+216; 
+        d.x = posOnLine.x+266; 
         d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; 
         return d.x;})
@@ -193,7 +193,7 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+216; 
+        d.x = posOnLine.x+266; 
         d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; 
         return d.x;})
@@ -293,7 +293,7 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+216; 
+        d.x = posOnLine.x+266; 
         d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; return d.x;})
       .attr("y", function(d){return d.y;})
@@ -364,7 +364,7 @@ function drawair(Month){
   for(i=0;i<4;i++)
   {
   d3.select("#chart").append("rect")
-  .attr("x", width+420)
+  .attr("x", width-110)
   .attr("y",height-160-13*i)
   .attr("width", 11)
   .attr("height", 11)
@@ -372,7 +372,7 @@ function drawair(Month){
   .style("fill", color_pie(data[i]));
 
 g.append("text")
-  .attr("x", width+435)
+  .attr("x", width-90)
   .attr("y",height-155-12*i)
   .attr("dy", "0.35em")
   .style("text-anchor", "start")
