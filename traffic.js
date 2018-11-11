@@ -1,10 +1,10 @@
 var svg = d3.select("#bar"),
-margin = {top: 20, right: 40, bottom: 30, left: 60},
+margin = {top: 20, right: 40, bottom: 30, left: 30},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-var x = d3.scaleBand().range([0, width-20]).padding(0.2).round(true);
+var x = d3.scaleBand().range([0, width-15]).padding(0.2).round(true);
 //var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
 //var x = d3.scaleOrdinal().range([0, width], .05);
 var y = d3.scaleLinear().rangeRound([height, 0]);
@@ -24,7 +24,7 @@ d3.csv("Lekagul_Sensor_Data.csv", function(d, i, columns) {
 
 function drawTraffic(data) {
   
-  var g = svg.append("g").attr("transform", "translate(" + 60 + "," + 20 + ")");
+  var g = svg.append("g").attr("transform", "translate(" + 30 + "," + 20 + ")");
 
 //   if(type!="all types"&&month!=0&&gate!=0){
 //     var dataFiltered= data.filter(function (d) { return d.month == month && d["car-type"]==type && d["gate-name"]==gate;});
@@ -125,7 +125,7 @@ function drawTraffic(data) {
     .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .attr("width", x.bandwidth())
+    .attr("width", x.bandwidth()-2)
     .on("mouseover",function(d,i){
       console.log(d);
                 d3.select(this)
@@ -151,8 +151,8 @@ g.append("g")
 .attr("class", "axis")
 .call(d3.axisLeft(y).ticks(null, "s"))
 .append("text")
-.attr("x", 1)
-.attr("y", y(y.ticks().pop()))
+.attr("x", 4)
+.attr("y", y(y.ticks().pop())-3)
 .attr("dy", "0.3em")
 .attr("fill", "black")
 .attr("font-weight", "bold")
@@ -175,9 +175,9 @@ g.append("g")
   .attr("fill", z);
 
   legend.append("text")
-  .attr("x", width - 14)
-  .attr("y", 9.5)
-  .attr("dy", "0.32em")
+  .attr("x", width - 16)
+  .attr("y", 8)
+  .attr("dy", "0.35em")
   .text(function(d) { return d; });
 
 }
