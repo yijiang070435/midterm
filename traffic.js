@@ -102,7 +102,7 @@ function drawTraffic(data) {
 
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
-      console.log(d);
+      
       var i = d.values.length;
       while (i--) 
         if (d.values[i].key == key)  
@@ -130,7 +130,7 @@ function drawTraffic(data) {
       console.log(d);
                 d3.select(this)
                 .style('opacity','0.5')})
-    .on("mouseleave", function(d,i){ 
+    .on("mouseleave", function(d,i){
                 d3.select(this)
                 .style('opacity','1')
                 })

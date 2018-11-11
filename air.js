@@ -110,8 +110,17 @@ function drawair(Month){
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
       .on("mouseleave", function(d){ 
           d3.select(this).style('fill',function(d){return color(d.group);})})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
       .attr("transform", function(d){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
+    
 
     d3.select("#chart").selectAll("text")
       .data(someData)
@@ -174,7 +183,7 @@ function drawair(Month){
         return d.value;})])
       .range([0, (r / numSpirals) - 30]);
 
-    d3.select('#chart').selectAll("rect")
+   d3.select('#chart').selectAll("rect")
       .data(someData)
       .enter()
       .append("rect")
@@ -193,7 +202,21 @@ function drawair(Month){
       .attr("height", function(d){return yScale(d.value);})
       .style("fill", function(d){return color(d.group);})
       .style("stroke", "none")
-      .attr("transform", function(d){return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
+      .on("mouseover",function(d,i){ 
+          d3.select(this).style('fill','yellow');
+          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mouseleave", function(d){ 
+          d3.select(this).style('fill',function(d){return color(d.group);})})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+      .attr("transform", function(d){
+        return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
 
       d3.select("#chart").selectAll("text")
       .data(someData)
@@ -210,6 +233,14 @@ function drawair(Month){
       .style("fill", "grey")
       .on("mouseover",function(d,i){ 
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
       .attr("startOffset", function(d){
         return ((d.linePer / spiralLength) * 100) + "%";})
     })}
@@ -274,6 +305,16 @@ function drawair(Month){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; })
       .on("mouseover",function(d,i){ 
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+      .attr("startOffset", function(d){
+        return ((d.linePer / spiralLength) * 100) + "%";})
 
     d3.select("#chart").selectAll("text")
       .data(someData).enter()
