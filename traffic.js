@@ -113,36 +113,7 @@ function drawTraffic(data) {
       return i!=-1?  d.values[i].values.length : 0;}) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
-    
     g.append("g")
-    .selectAll("g")
-    .data(stackGenerator)
-    .enter().append("g")
-    .attr("fill", function(d) { return z(d.key); })
-    .selectAll("rect")
-    .data(function(d) {return d; })
-    .enter().append("rect")
-    .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
-    .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .attr("width", x.bandwidth()-2)
-    .on("mouseover",function(d,i){
-      console.log(d);
-                d3.select(this)
-                .style('opacity','0.5')})
-    .on("mouseleave", function(d,i){
-                d3.select(this)
-                .style('opacity','1')
-                })
-    .on("mousemove", function(d){
-                tooltip
-                .style("left", d3.event.pageX - 50 + "px")
-                .style("top", d3.event.pageY - 70 + "px")
-                .style("display", "inline-block")
-                .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
-    .on("mouseout", function(d){ 
-                tooltip.style("display", "none");})
-      g.append("g")
 .attr("class", "x axis")
 .attr("transform", "translate(0," + height + ")")
 .call(d3.axisBottom(x));
@@ -158,6 +129,50 @@ g.append("g")
 .attr("font-weight", "bold")
 .attr("text-anchor", "start")
 .text("Car Number");
+
+d3.selectAll("g.x g.tick") 
+      .append("line")       
+      .classed("grid-line", true)
+      .attr("x1", 0) 
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", -height);           
+  d3.selectAll("g.y g.tick") 
+      .append("line") 
+      .classed("grid-line", true)
+      .attr("x1", 0) 
+      .attr("y1", 0)
+      .attr("x2", width)
+      .attr("y2", 0);
+    g.append("g")
+    .selectAll("g")
+    .data(stackGenerator)
+    .enter().append("g")
+    .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) {return d; })
+    .enter().append("rect")
+    .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
+    .attr("y", function(d) { return y(d[1]); })
+    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    .attr("width", x.bandwidth()-2)
+    .on("mouseover",function(d,i){
+        console.log(i);
+                d3.select(this)
+                .style('opacity','0.5')})
+    .on("mouseleave", function(d,i){
+                d3.select(this)
+                .style('opacity','1')
+                })
+    .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
+    .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+
 
   var legend = g.append("g")
   .attr("font-family", "sans-serif")
