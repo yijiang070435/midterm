@@ -89,10 +89,11 @@ function drawTraffic(data) {
     var dataFiltered= data.filter(function (d) { return d.month == month;});
     var nested = d3.nest()
     .key(function(d){return d.Timestamp;})
+    //.rollup(function(v) { return {total: v.length}; })
     .key(function(d){ return d["car-type"];})
     .sortKeys(d3.ascending)
     .key(function(d){return d["gate-name"];})
-    //.rollup(function(v) { return {total: v.length}; })
+    
     .entries(dataFiltered);
     
     console.log(nested);
@@ -102,32 +103,36 @@ function drawTraffic(data) {
 
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
-      console.log(d);
+      //console.log(d);
       var i = d.values.length;
-      while (i--) 
-        if (d.values[i].key == key)  
-          {d.type=d.values[i].key;break;}
+      while (i--) break;
       
-
-      
-      return i!=-1?  d.values[i].values.length : 0;}) (nested);
+      t=0;
+      if(i!=-1){
+        for(j=0;j<d.values[i].values.length;j++)
+        {
+            t+=d.values[i].values[j].values.length;
+        }
+        console.log(t);
+      }
+      return t;}) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
-    
+    console.log(stackGenerator);
     g.append("g")
     .selectAll("g")
     .data(stackGenerator)
     .enter().append("g")
     .attr("fill", function(d) { return z(d.key); })
     .selectAll("rect")
-    .data(function(d) {return d; })
+    .data(function(d) {console.log(d);return d; })
     .enter().append("rect")
     .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth())
     .on("mouseover",function(d,i){
-      console.log(d);
+      //console.log(d);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){ 
@@ -187,6 +192,6 @@ function Click(){
   //type= document.getElementById("sel5").value;
   //gate=document.getElementById("sel6").value;
   d3.select("#bar").selectAll('g').remove();
-  console.log(month);
+  //console.log(month);
   drawTraffic(data);
 }
