@@ -98,14 +98,15 @@ function drawTraffic(data) {
     
     console.log(nested);
 
-    x.domain(days.map(function(d) { return month.substring(5,7)+"-"+d; }));
+    x.domain(days.map(function(d) { return d; }));
     
 
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
       //console.log(d);
       var i = d.values.length;
-      while (i--) break;
+      while (i--) 
+        if(d.values[i].key==key)break;
       
       t=0;
       if(i!=-1){
@@ -127,7 +128,7 @@ function drawTraffic(data) {
     .selectAll("rect")
     .data(function(d) {console.log(d);return d; })
     .enter().append("rect")
-    .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
+    .attr("x", function(d) { return x(d.data.key.substring(8, 10)); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth())
