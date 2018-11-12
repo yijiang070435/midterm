@@ -4,6 +4,19 @@ width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
+var radius = 300 / 2;
+var donutarc = d3.arc()
+    .outerRadius(radius )
+    .innerRadius(radius-30);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d; });
+
+    var color_pie_donut = d3.scaleOrdinal()
+    .range(["#E6E6FA", "#D8BFD8", "#DDA0DD", "#EE82EE","#BA55D3","#663399","#8B008B","#4B0082","#6A5ACD","#7B68EE","#008080","#8FBC8B","#556B2F",
+      "#6B8E23","#008000","#3CB371","#98FB98","#87CEEB","#B0E0E6","#4682B4","#DEB887","#BC8F8F","#F4A460","#B8860B","#D2691E"]);
+
 var x = d3.scaleBand().range([0, width-15]).padding(0.2).round(true);
 //var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
 //var x = d3.scaleOrdinal().range([0, width], .05);
@@ -107,8 +120,6 @@ function drawTraffic(data) {
         if (d.values[i].key == key)  
           {d.type=d.values[i].key;break;}
       
-
-      
       return i!=-1?  d.values[i].values.length : 0;}) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
@@ -135,7 +146,8 @@ d3.selectAll("g.x g.tick")
       .attr("x1", 0) 
       .attr("y1", 0)
       .attr("x2", 0)
-      .attr("y2", -height);           
+      .attr("y2", -height);  
+
   d3.selectAll("g.y g.tick") 
       .append("line") 
       .classed("grid-line", true)
@@ -143,6 +155,7 @@ d3.selectAll("g.x g.tick")
       .attr("y1", 0)
       .attr("x2", width)
       .attr("y2", 0);
+
     g.append("g")
     .selectAll("g")
     .data(stackGenerator)
@@ -157,7 +170,7 @@ d3.selectAll("g.x g.tick")
     .attr("width", x.bandwidth()-2)
     .on("mouseover",function(d,i){
       var type=d.data.key.substring(11,13);
-      console.log(d.data.values[0].values);
+      drawdonutpie(d.data.values[0].values);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){
@@ -196,58 +209,70 @@ d3.selectAll("g.x g.tick")
   .text(function(d) { return d; });
 
 }
-function drawpie(data)
+function drawdonutpie(data)
   {
-    d3.select("#chart").selectAll(".arc").remove();
-    d3.select("#chart").selectAll(".text1").remove();
-    d3.select("#chart").selectAll(".rect1").remove();
-    d3.select("#chart").selectAll(".text2").remove();
+    
+    d3.select("#bar").selectAll(".arc").remove();
+    d3.select("#bar").selectAll(".text3").remove();
+    d3.select("#bar").selectAll(".rect2").remove();
+    d3.select("#bar").selectAll(".text4").remove();
 
-    var name=["Methylosmolene","Chlorodinine","AGOC-3A","Appluimonia"];
-    var data = [a,b,c,d];
-    var total_number=a+b+c+d;
-    var percent=[a/total_number*100,b/total_number*100,c/total_number*100,d/total_number*100];
-    var g = d3.select("#chart").selectAll(".arc")
-      .data(pie(data))
-    .enter().append("g")
+    var name=[];
+    var number=[];
+    var percent=[];
+    var total=0;
+    for(var i=0;i<data.length;i++)
+    {
+      name.push(data[i].key);
+      number.push(data[i].values.length);
+      total=total+data[i].values.length;
+      percent.push(data[i].values.length/total);
+    }
+    console.log(data)
+     var g = d3.select("#bar").selectAll(".arc")
+      .data(pie(number))
+      .enter().append("g")
       .attr("class", "arc");
-
     g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color_pie(d.data); })
+      .attr("d", donutarc)
+      .style("fill", function(d) { console.log(d);return color_pie_donut(d.endAngle); })
       .attr("transform", "translate(" + (600) + "," + (216) + ")");
     g.append("text")
       .classed("class","text_data")
       .attr("transform", function(d) { var f=labelArc.centroid(d);
         return "translate(" + (f[0]+600)+","+(f[1]+216) + ")"; })
       .attr("dy", ".35em")
-      .text(function(d) { return d.data.toFixed(2); });
-  for(i=0;i<4;i++)
+      .text(function(d) { return d.value; });
+
+    for(i=0;i<data.length;i++)
   {
-  d3.select("#chart").append("rect")
+  d3.select("#bar").append("rect")
   .attr("x", width-110)
   .attr("y",height-160-13*i)
   .attr("width", 11)
   .attr("height", 11)
-  .classed("class","rect1")
-  .style("fill", color_pie(data[i]));
+  .classed("class","rect2")
+  .style("fill", color_pie_donut(name[i]));
 
 g.append("text")
   .attr("x", width-90)
   .attr("y",height-155-12*i)
   .attr("dy", "0.35em")
   .style("text-anchor", "start")
-  .classed("class","text2")
+  .classed("class","text3")
   .text(name[i])
 
  g.append("text")
   .attr("x", width+530)
   .attr("y",height-155-12*i)
   .attr("dy", "0.35em")
-  .classed("class","text1")
+  .classed("class","text4")
   .text(percent[i].toFixed(2)+"%")
 }
-   
+
+    
+    
+    
   }
 
 function Click(){
