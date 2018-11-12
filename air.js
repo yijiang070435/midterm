@@ -1,16 +1,16 @@
   
-var margin = {top:10,bottom:10,left:10,right:10};
+var margin = {top:6,bottom:6,left:6,right:6};
 var svg = d3.select("#chart").append("svg")
-      .attr("width", width + margin.right + margin.left)
-      .attr("height", height + margin.left + margin.right).append("g")
+      .attr("width", 960 + margin.right + margin.left)
+      .attr("height", 432 + margin.left + margin.right).append("g")
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var width = 720,
-      height = 720,
+var width = 432,
+      height = 432,
       start = 0,
       end = 2.35,
       numSpirals = 2
-var radius = 500 / 2;
+var radius = 300 / 2;
 
 var color_pie = d3.scaleOrdinal()
     .range(["#ECDB84", "#EEC85D", "#EEA760", "#EA753C"]);
@@ -20,8 +20,8 @@ var arc = d3.arc()
     .innerRadius(0);
 
 var labelArc = d3.arc()
-    .outerRadius(radius - 40)
-    .innerRadius(radius - 40);
+    .outerRadius(radius - 24)
+    .innerRadius(radius - 24);
 
 var pie = d3.pie()
     .sort(null)
@@ -31,8 +31,8 @@ function drawair(Month){
 
     var theta = function(r) {return numSpirals * Math.PI * r;};
     var color = d3.scaleOrdinal(d3.schemeCategory20);
-    var r = d3.min([width, height]) / 2 - 30;
-    var radius = d3.scaleLinear().domain([start, end]).range([30, r]);
+    var r = d3.min([width, height]) / 2 - 18;
+    var radius = d3.scaleLinear().domain([start, end]).range([18, r]);
 
     var points = d3.range(start, end + 0.001, (end - start) / 1000);
 
@@ -43,7 +43,7 @@ function drawair(Month){
     var path = d3.select("#chart").append("path").datum(points)
       .attr("id", "spiral").attr("d", spiral)
       .style("fill", "none").style("stroke", "steelblue")
-      .attr("transform", "translate(" + (360) + "," + ( 360) + ")");
+      .attr("transform", "translate(" + (266) + "," + (216) + ")");
 
     var someData = [];
     if(Month==4){
@@ -96,8 +96,8 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+360; 
-        d.y = posOnLine.y+360;     
+        d.x = posOnLine.x+266; 
+        d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; 
         return d.x;})
       .attr("y", function(d){return d.y;})
@@ -110,8 +110,17 @@ function drawair(Month){
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
       .on("mouseleave", function(d){ 
           d3.select(this).style('fill',function(d){return color(d.group);})})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
       .attr("transform", function(d){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
+    
 
     d3.select("#chart").selectAll("text")
       .data(someData)
@@ -172,9 +181,9 @@ function drawair(Month){
     var yScale = d3.scaleLinear()
       .domain([0, d3.max(someData, function(d){
         return d.value;})])
-      .range([0, (r / numSpirals) - 30]);
+      .range([0, (r / numSpirals) - 18]);
 
-    d3.select('#chart').selectAll("rect")
+   d3.select('#chart').selectAll("rect")
       .data(someData)
       .enter()
       .append("rect")
@@ -184,8 +193,8 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+360; 
-        d.y = posOnLine.y+360;     
+        d.x = posOnLine.x+266; 
+        d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; 
         return d.x;})
       .attr("y", function(d){return d.y;})
@@ -193,7 +202,21 @@ function drawair(Month){
       .attr("height", function(d){return yScale(d.value);})
       .style("fill", function(d){return color(d.group);})
       .style("stroke", "none")
-      .attr("transform", function(d){return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
+      .on("mouseover",function(d,i){ 
+          d3.select(this).style('fill','yellow');
+          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mouseleave", function(d){ 
+          d3.select(this).style('fill',function(d){return color(d.group);})})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+      .attr("transform", function(d){
+        return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
 
       d3.select("#chart").selectAll("text")
       .data(someData)
@@ -210,6 +233,14 @@ function drawair(Month){
       .style("fill", "grey")
       .on("mouseover",function(d,i){ 
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
       .attr("startOffset", function(d){
         return ((d.linePer / spiralLength) * 100) + "%";})
     })}
@@ -250,7 +281,7 @@ function drawair(Month){
     var yScale = d3.scaleLinear()
       .domain([0, d3.max(someData, function(d){
         return d.value;})])
-      .range([0, (r / numSpirals) - 30]);
+      .range([0, (r / numSpirals) - 18]);
 
     d3.select('#chart').selectAll("rect")
       .data(someData)
@@ -262,8 +293,8 @@ function drawair(Month){
             posOnLine = path.node().getPointAtLength(linePer),
             angleOnLine = path.node().getPointAtLength(linePer - barWidth);     
         d.linePer = linePer;
-        d.x = posOnLine.x+360; 
-        d.y = posOnLine.y+360;     
+        d.x = posOnLine.x+266; 
+        d.y = posOnLine.y+216;     
         d.a = (Math.atan2(angleOnLine.y, angleOnLine.x) * 180 / Math.PI) - 90; return d.x;})
       .attr("y", function(d){return d.y;})
       .attr("width", function(d){return barWidth;})
@@ -274,6 +305,16 @@ function drawair(Month){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; })
       .on("mouseover",function(d,i){ 
           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+      .on("mousemove", function(d){
+                tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html("Date : "+d.datetime+"<br/>"+"Sensor : "+d.monitor)})
+      .on("mouseout", function(d){ 
+                tooltip.style("display", "none");})
+      .attr("startOffset", function(d){
+        return ((d.linePer / spiralLength) * 100) + "%";})
 
     d3.select("#chart").selectAll("text")
       .data(someData).enter()
@@ -299,6 +340,8 @@ function drawair(Month){
     d3.select("#chart").selectAll(".arc").remove();
     d3.select("#chart").selectAll(".text1").remove();
     d3.select("#chart").selectAll(".rect1").remove();
+    d3.select("#chart").selectAll(".text2").remove();
+
     var name=["Methylosmolene","Chlorodinine","AGOC-3A","Appluimonia"];
     var data = [a,b,c,d];
     var total_number=a+b+c+d;
@@ -311,33 +354,35 @@ function drawair(Month){
     g.append("path")
       .attr("d", arc)
       .style("fill", function(d) { return color_pie(d.data); })
-      .attr("transform", "translate(" + (1000) + "," + ( 360) + ")");
+      .attr("transform", "translate(" + (600) + "," + (216) + ")");
     g.append("text")
       .classed("class","text_data")
       .attr("transform", function(d) { var f=labelArc.centroid(d);
-        return "translate(" + (f[0]+1000)+","+(f[1]+360) + ")"; })
+        return "translate(" + (f[0]+600)+","+(f[1]+216) + ")"; })
       .attr("dy", ".35em")
       .text(function(d) { return d.data.toFixed(2); });
   for(i=0;i<4;i++)
   {
-  g.append("rect")
-  .attr("x", width+200)
-  .attr("y",height-360-20*i)
-  .attr("width", 19)
-  .attr("height", 19)
+  d3.select("#chart").append("rect")
+  .attr("x", width-110)
+  .attr("y",height-160-13*i)
+  .attr("width", 11)
+  .attr("height", 11)
   .classed("class","rect1")
   .style("fill", color_pie(data[i]));
 
-  g.append("text")
-  .attr("x", width+260)
-  .attr("y",height-350-20*i)
-  .attr("dy", "0.32em")
-  .classed("class","text1")
+g.append("text")
+  .attr("x", width-90)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .style("text-anchor", "start")
+  .classed("class","text2")
   .text(name[i])
-  g.append("text")
-  .attr("x", width+320)
-  .attr("y",height-350-20*i)
-  .attr("dy", "0.32em")
+
+ g.append("text")
+  .attr("x", width+530)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
   .classed("class","text1")
   .text(percent[i].toFixed(2)+"%")
 }
@@ -350,7 +395,8 @@ function CLICK()
   Month=document.getElementById("sel1").value;
   d3.select("#chart").selectAll('rect').remove();
   d3.select("#chart").selectAll(".arc").remove();
-    d3.select("#chart").selectAll(".text1").remove();
+    d3.select("g").selectAll(".text1").remove();
+    d3.select("g").selectAll(".text2").remove();
     d3.select("#chart").selectAll(".rect1").remove();
   d3.select("#chart").selectAll('text').remove();
 

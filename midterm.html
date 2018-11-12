@@ -13,27 +13,46 @@
 </script>
 </head>
 <style>
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  color:black;
+}
+.axis .grid-line {
+        stroke: rgb(0,0,0,0.5);
+        shape-rendering: crispEdges;
+        stroke-opacity: .2;
+}
 .blue{
   float:left;
-  width:720px;
+  width:432px;
   background:#ffffff;
-  height:720px;
+  height:432px;
 }
 .red{
-  margin-left:720px;
+  margin-left:432px;
   background:#ffffff;
-  height:720px;
+  height:432px;
 }
 .pink{
   float:left;
-  width:360px;
+  width:216px;
   background:#ffffff;
-  height:360px;
+  height:216px;
 }
 .yellow{
-  margin-left:720px;
+  margin-left:432px;
   background:#ffffff;
-  height:720px;
+  height:432px;
+}
+.grey{
+  margin-left:300px;
+  background:#ffffff;
 }
 path.spiral {
         fill: none;
@@ -73,11 +92,11 @@ path.spiral {
 }
 
 .img-zoom-result {
-  border: 5px solid #d4d4d4;
+  border: 3px solid #d4d4d4;
   border-color: white;
   /*set the size of the result div:*/
-  width: 360px;
-  height: 360px;
+  width: 300px;
+  height: 300px;
 }
 </style>
 <body>
@@ -87,52 +106,12 @@ path.spiral {
     <div class="form-group">
       <label class="text-white" for="sel1" >Month</label>
       <select class="form-control input-sm" id="sel1">
-          <option value="" disabled selected>Select Month</option>
+          <option value="0" disabled selected>Select Month</option>
           <option value="4" onclick="CLICK()">4</option>
           <option value="8" onclick="CLICK()">8</option>
           <option value="12" onclick="CLICK()">12</option>
        </select>
     </div>
-  	<div class="form-group">
-   		<label class="text-white" for="sel2">Chemical</label>
-    	<select class="form-control input-sm" id="sel2" >
-      		<option value="" disabled selected>Select Chemical</option>
-          <option value="3">all chemicals</option>
-      		<option value="4">AGOC-3A</option>
-      		<option value="5">Appluimonia</option>
-      		<option value="6">Methylosmolene</option>
-      		<option value="7">Chlorodinine</option>
-   		 </select>
-  	</div>
-  	<div class="form-group">
-   		<label class="text-white" for="sel3" >Sensor</label>
-    	<select class="form-control input-sm" id="sel3">
-      		<option value="" disabled selected>Select Monitor</option>
-      		<option value="8">1</option>
-      		<option value="9">2</option>
-      		<option value="10">3</option>
-      		<option value="11">4</option>
-      		<option value="12">5</option>
-      		<option value="13">6</option>
-      		<option value="14">7</option>
-      		<option value="15">8</option>
-      		<option value="16">9</option>
-   		 </select>
-  	</div>
-    
-  </nav>
-   <div class="pink">
-      <img id= 'myimage' src="MapLargeLabels.jpg" width="360" height="360">
-      <div id="myresult" class='img-zoom-result'></div>
-   </div> 
-   <script type="text/javascript" src="zoom.js"></script> 
-    <svg id="chart" width="1600" height="720"> </svg>
-    <script type="text/javascript" src="air.js"></script>
- 
-
-  
-  <nav class="navbar navbar-dark navbar-default bg-dark"> 
-    <a class="navbar-brand" href="#">Traffic Of The Boonsong Lekagul Nature Preserve</a>  
     <div class="form-group">
       <label class="text-white" for="sel4" >Month</label>
       <select  class="form-control input-sm" id="sel4">
@@ -154,6 +133,17 @@ path.spiral {
 
        </select>
     </div>
+  </nav>
+   <div class="pink">
+      <img id= 'myimage' src="MapLargeLabels.jpg" width="300" height="300">
+      <div id="myresult" class='img-zoom-result'></div>
+   </div> 
+   <script type="text/javascript" src="zoom.js"></script> 
+    <svg id="chart" width="960" height="432"> </svg>
+    <script type="text/javascript" src="air.js"></script>
+ 
+
+  
     <!-- <div class="form-group">
       <label class="text-white" for="sel5">car type</label>
       <select class="form-control input-sm" id="sel5">
@@ -201,11 +191,10 @@ path.spiral {
        </select>
     </div> -->
  
-  </nav> 
-  <svg id="bar" width="1200" height="720"> </svg>
-  <script type="text/javascript" src="traffic.js"></script>
-
-	
+  <div class='grey'>
+    <svg id="bar" width="940" height="360"> </svg>
+    <script type="text/javascript" src="traffic.js"></script>
+  </div>
 
 </body>
 </html>
