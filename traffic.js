@@ -1,10 +1,23 @@
 var svg = d3.select("#bar"),
-margin = {top: 20, right: 40, bottom: 30, left: 60},
+margin = {top: 20, right: 40, bottom: 30, left: 30},
 width = +svg.attr("width") - margin.left - margin.right,
 height = +svg.attr("height") - margin.top - margin.bottom;
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-var x = d3.scaleBand().range([0, width-20]).padding(0.2).round(true);
+var radius = 300 / 2;
+var donutarc = d3.arc()
+    .outerRadius(radius )
+    .innerRadius(radius-30);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d; });
+
+    var color_pie_donut = d3.scaleOrdinal()
+    .range(["#E6E6FA", "#D8BFD8", "#DDA0DD", "#EE82EE","#BA55D3","#663399","#8B008B","#4B0082","#6A5ACD","#7B68EE","#008080","#8FBC8B","#556B2F",
+      "#6B8E23","#008000","#3CB371","#98FB98","#87CEEB","#B0E0E6","#4682B4","#DEB887","#BC8F8F","#F4A460","#B8860B","#D2691E"]);
+
+var x = d3.scaleBand().range([0, width-15]).padding(0.2).round(true);
 //var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
 //var x = d3.scaleOrdinal().range([0, width], .05);
 var y = d3.scaleLinear().rangeRound([height, 0]);
@@ -24,7 +37,7 @@ d3.csv("Lekagul_Sensor_Data.csv", function(d, i, columns) {
 
 function drawTraffic(data) {
   
-  var g = svg.append("g").attr("transform", "translate(" + 60 + "," + 20 + ")");
+  var g = svg.append("g").attr("transform", "translate(" + 30 + "," + 20 + ")");
 
 //   if(type!="all types"&&month!=0&&gate!=0){
 //     var dataFiltered= data.filter(function (d) { return d.month == month && d["car-type"]==type && d["gate-name"]==gate;});
@@ -88,55 +101,79 @@ function drawTraffic(data) {
     var days=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
     var dataFiltered= data.filter(function (d) { return d.month == month;});
     var nested = d3.nest()
-    .key(function(d){return d.Timestamp;})
-    //.rollup(function(v) { return {total: v.length}; })
+    .key(function(d){return [d.Timestamp,d["car-type"]];})
     .key(function(d){ return d["car-type"];})
     .sortKeys(d3.ascending)
     .key(function(d){return d["gate-name"];})
-    
+    //.rollup(function(v) { return {total: v.length}; })
     .entries(dataFiltered);
     
-    console.log(nested);
 
-    x.domain(days.map(function(d) { return d; }));
+    x.domain(days.map(function(d) { return month.substring(5,7)+"-"+d; }));
     
 
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
-      //console.log(d);
+      
       var i = d.values.length;
       while (i--) 
-        if(d.values[i].key==key)break;
+        if (d.values[i].key == key)  
+          {d.type=d.values[i].key;break;}
       
-      t=0;
-      if(i!=-1){
-        for(j=0;j<d.values[i].values.length;j++)
-        {
-            t+=d.values[i].values[j].values.length;
-        }
-        console.log(t);
-      }
-      return t;}) (nested);
+      return i!=-1?  d.values[i].values.length : 0;}) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
-    console.log(stackGenerator);
+    g.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + height + ")")
+.call(d3.axisBottom(x));
+
+g.append("g")
+.attr("class", "y axis")
+.call(d3.axisLeft(y).ticks(null, "s"))
+.append("text")
+.attr("x", 4)
+.attr("y", y(y.ticks().pop())-3)
+.attr("dy", "0.3em")
+.attr("fill", "black")
+.attr("font-weight", "bold")
+.attr("text-anchor", "start")
+.text("Car Number");
+
+d3.selectAll("g.x g.tick") 
+      .append("line")       
+      .classed("grid-line", true)
+      .attr("x1", 0) 
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", -height);  
+
+  d3.selectAll("g.y g.tick") 
+      .append("line") 
+      .classed("grid-line", true)
+      .attr("x1", 0) 
+      .attr("y1", 0)
+      .attr("x2", width)
+      .attr("y2", 0);
+
     g.append("g")
     .selectAll("g")
     .data(stackGenerator)
     .enter().append("g")
     .attr("fill", function(d) { return z(d.key); })
     .selectAll("rect")
-    .data(function(d) {console.log(d);return d; })
+    .data(function(d) {return d; })
     .enter().append("rect")
-    .attr("x", function(d) { return x(d.data.key.substring(8, 10)); })
+    .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .attr("width", x.bandwidth())
+    .attr("width", x.bandwidth()-2)
     .on("mouseover",function(d,i){
-      //console.log(d);
+      var type=d.data.key.substring(11,13);
+      drawdonutpie(d.data.values[0].values);
                 d3.select(this)
                 .style('opacity','0.5')})
-    .on("mouseleave", function(d,i){ 
+    .on("mouseleave", function(d,i){
                 d3.select(this)
                 .style('opacity','1')
                 })
@@ -146,24 +183,9 @@ function drawTraffic(data) {
                 .style("top", d3.event.pageY - 70 + "px")
                 .style("display", "inline-block")
                 .html(d.data.key.substring(0, 10)+" : "+(-d[0] + d[1]))})
-       .on("mouseout", function(d){ 
+    .on("mouseout", function(d){ 
                 tooltip.style("display", "none");})
-      g.append("g")
-.attr("class", "axis")
-.attr("transform", "translate(0," + height + ")")
-.call(d3.axisBottom(x));
 
-g.append("g")
-.attr("class", "axis")
-.call(d3.axisLeft(y).ticks(null, "s"))
-.append("text")
-.attr("x", 1)
-.attr("y", y(y.ticks().pop()))
-.attr("dy", "0.3em")
-.attr("fill", "black")
-.attr("font-weight", "bold")
-.attr("text-anchor", "start")
-.text("Car Number");
 
   var legend = g.append("g")
   .attr("font-family", "sans-serif")
@@ -181,18 +203,83 @@ g.append("g")
   .attr("fill", z);
 
   legend.append("text")
-  .attr("x", width - 14)
-  .attr("y", 9.5)
-  .attr("dy", "0.32em")
+  .attr("x", width - 16)
+  .attr("y", 8)
+  .attr("dy", "0.35em")
   .text(function(d) { return d; });
 
 }
+function drawdonutpie(data)
+  {
+    
+    d3.select("#bar").selectAll(".arc").remove();
+    d3.select("#bar").selectAll(".text3").remove();
+    d3.select("#bar").selectAll(".rect2").remove();
+    d3.select("#bar").selectAll(".text4").remove();
+
+    var name=[];
+    var number=[];
+    var percent=[];
+    var total=0;
+    for(var i=0;i<data.length;i++)
+    {
+      name.push(data[i].key);
+      number.push(data[i].values.length);
+      total=total+data[i].values.length;
+      percent.push(data[i].values.length/total);
+    }
+    console.log(data)
+     var g = d3.select("#bar").selectAll(".arc")
+      .data(pie(number))
+      .enter().append("g")
+      .attr("class", "arc");
+    g.append("path")
+      .attr("d", donutarc)
+      .style("fill", function(d) { console.log(d);return color_pie_donut(d.endAngle); })
+      .attr("transform", "translate(" + (600) + "," + (216) + ")");
+    g.append("text")
+      .classed("class","text_data")
+      .attr("transform", function(d) { var f=labelArc.centroid(d);
+        return "translate(" + (f[0]+600)+","+(f[1]+216) + ")"; })
+      .attr("dy", ".35em")
+      .text(function(d) { return d.value; });
+
+    for(i=0;i<data.length;i++)
+  {
+  d3.select("#bar").append("rect")
+  .attr("x", width-110)
+  .attr("y",height-160-13*i)
+  .attr("width", 11)
+  .attr("height", 11)
+  .classed("class","rect2")
+  .style("fill", color_pie_donut(name[i]));
+
+g.append("text")
+  .attr("x", width-90)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .style("text-anchor", "start")
+  .classed("class","text3")
+  .text(name[i])
+
+ g.append("text")
+  .attr("x", width+530)
+  .attr("y",height-155-12*i)
+  .attr("dy", "0.35em")
+  .classed("class","text4")
+  .text(percent[i].toFixed(2)+"%")
+}
+
+    
+    
+    
+  }
 
 function Click(){
   month=document.getElementById("sel4").value;
   //type= document.getElementById("sel5").value;
   //gate=document.getElementById("sel6").value;
   d3.select("#bar").selectAll('g').remove();
-  //console.log(month);
+  console.log(month);
   drawTraffic(data);
 }
