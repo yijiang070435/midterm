@@ -108,19 +108,28 @@ function drawTraffic(data) {
     //.rollup(function(v) { return {total: v.length}; })
     .entries(dataFiltered);
     
-
+    console.log(nested);
     x.domain(days.map(function(d) { return month.substring(5,7)+"-"+d; }));
     
 
     var stackGenerator=d3.stack().keys(keys).value((d, key)=>{
       
       
-      var i = d.values.length;
-      while (i--) 
-        if (d.values[i].key == key)  
-          {d.type=d.values[i].key;break;}
+      var i = d.values.length-1;
+      if (d.values[0].key != key)  
+        return 0;
+
+      console.log(i);
+      t=0;
+      for(j=0;j<d.values[0].values.length;j++)
+        {
+            t+=d.values[0].values[j].values.length;
+        }
+        
       
-      return i!=-1?  d.values[i].values.length : 0;}) (nested);
+      //console.log(t);
+      return t;
+    }) (nested);
     y.domain([0, d3.max(stackGenerator, function(d){return d3.max(d, function(d){return d3.max(d)})})]);
 
     g.append("g")
@@ -162,7 +171,7 @@ d3.selectAll("g.x g.tick")
     .enter().append("g")
     .attr("fill", function(d) { return z(d.key); })
     .selectAll("rect")
-    .data(function(d) {return d; })
+    .data(function(d) {console.log(d);return d; })
     .enter().append("rect")
     .attr("x", function(d) { return x(d.data.key.substring(5, 10)); })
     .attr("y", function(d) { return y(d[1]); })
