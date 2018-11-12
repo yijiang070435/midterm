@@ -142,6 +142,13 @@ function drawair(Month){
       .style("fill", "grey")
       .attr("startOffset", function(d){
         return ((d.linePer / spiralLength) * 100) + "%";})
+       d3.select("#chart").append("text")
+  .attr("x", 140)
+  .attr("y",height-255)
+  .attr("dy", "0.25em")
+  .style("font-size", "12px")
+  .style("text-anchor", "start")
+  .text("Total Chemicals in different Sensors in April")
     
     })
   }
@@ -217,6 +224,13 @@ function drawair(Month){
                 tooltip.style("display", "none");})
       .attr("transform", function(d){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; });
+       d3.select("#chart").append("text")
+  .attr("x", 140)
+  .attr("y",height-255)
+  .attr("dy", "0.25em")
+  .style("font-size", "12px")
+  .style("text-anchor", "start")
+  .text("Total Chemicals in different Sensors in August")
 
       d3.select("#chart").selectAll("text")
       .data(someData)
