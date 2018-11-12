@@ -194,7 +194,7 @@ d3.selectAll("g.x g.tick")
     .on("mouseover",function(d,i){
       var type=d.data.key.substring(11,13);
       var date=d.data.key.substring(0,10)
-      drawdonutpie(d.data.values[0].values,date);
+      drawdonutpie(d.data.values[0].values,date,type);
                 d3.select(this)
                 .style('opacity','0.5')})
     .on("mouseleave", function(d,i){
@@ -233,9 +233,9 @@ d3.selectAll("g.x g.tick")
   .text(function(d) { return d; });
 
 }
-function drawdonutpie(data,date)
+function drawdonutpie(data,date,type)
   {
-    console.log(data)
+    
     
     d3.select("#bar").selectAll(".arc").remove();
     d3.select("#bar").selectAll(".text3").remove();
@@ -318,7 +318,7 @@ for(var i=0;i<data.length;i++)
   .style("font-size", "10px")
   .style("text-anchor", "start")
   .classed("class","text4")
-  .text("Position Of Type In "+date)
+  .text("Position Of Type "+type+" In "+date)
     
     
     
