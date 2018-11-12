@@ -216,7 +216,7 @@ d3.selectAll("g.x g.tick")
   .attr("font-size", 10)
   .attr("text-anchor", "end")
   .selectAll("g")
-  .data(keys.slice().reverse())
+  .data(keys.slice())
   .enter().append("g")
   .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
