@@ -48,11 +48,11 @@
 .yellow{
   margin-left:480px;
   background:#ffffff;
-  height:432px;
+  height:350px;
   margin-top: -20px;
 }
 .grey{
-  margin-left:300px;
+  margin-top:50px;
   background:#ffffff;
 }
 path.spiral {
@@ -105,9 +105,9 @@ path.spiral {
 <body>
 	
 	<nav class="navbar navbar-dark bg-dark"> 
-    <a class="navbar-brand" href="#">Air Pollution Of The Boonsong Lekagul Nature Preserve</a>  
+    <a class="navbar-brand" href="#">Air Pollution And Traffic Problem Of The Boonsong Lekagul Nature Preserve</a>  
     <div class="form-group">
-      <label class="text-white" for="sel1" >Month</label>
+      <label class="text-white" for="sel1" >Air Pollution</label>
       <select class="form-control input-sm" id="sel1">
           <option value="0" disabled selected>Select Month</option>
           <option value="4" onclick="CLICK()">4</option>
@@ -116,7 +116,7 @@ path.spiral {
        </select>
     </div>
     <div class="form-group">
-      <label class="text-white" for="sel4" >Month</label>
+      <label class="text-white" for="sel4" > Traffic Problem</label>
       <select  class="form-control input-sm" id="sel4">
           <option value="0" disabled selected>Select Month</option>
 
@@ -143,7 +143,7 @@ path.spiral {
    </div> 
    <script type="text/javascript" src="zoom.js"></script> 
    <div class="yellow">
-    <svg id="chart" width="960" height="432"> </svg>
+    <svg id="chart" width="960" height="352"> </svg>
     <script type="text/javascript" src="air.js"></script>
   </div>
  
@@ -196,7 +196,7 @@ path.spiral {
        </select>
     </div> -->
  
-  <div class='grey'>
+  <div >
     <svg id="bar" width="940" height="360"> </svg>
     <script type="text/javascript" src="traffic.js"></script>
   </div>
