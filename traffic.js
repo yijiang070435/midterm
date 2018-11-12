@@ -242,6 +242,7 @@ function drawdonutpie(data,date)
     d3.select("#bar").selectAll(".rect2").remove();
     d3.select("#bar").selectAll(".text4").remove();
 
+
     var name=[];
     var number=[];
     var percent=[];
@@ -283,7 +284,7 @@ for(var i=0;i<data.length;i++)
   .classed("class","rect2")
   .style("fill", color_pie_donut(name[i]));
 
-g.append("text")
+ g.append("text")
   .attr("x", 1175)
   .attr("y",32+13*i)
   .attr("dy", "0.25em")
@@ -293,7 +294,7 @@ g.append("text")
   .text(name[i])
 
  g.append("text")
-  .attr("x", 1250)
+  .attr("x", 1252)
   .attr("y",32+13*i)
   .attr("dy", "0.25em")
   .style("font-size", "10px")
@@ -306,7 +307,7 @@ g.append("text")
   .attr("dy", "0.25em")
   .classed("class","text4")
   .text(number[i])
-  .style("font-size", "10px")
+  .attr("font-size", "10px")
 
  
 }
