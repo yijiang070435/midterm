@@ -358,7 +358,6 @@ function drawair(Month){
   }
   function drawpie(a,b,c,d,e,f)
   {
-    console.log(e);
     d3.select("#chart").selectAll(".arc").remove();
     d3.select("#chart").selectAll(".text1").remove();
     d3.select("#chart").selectAll(".rect1").remove();
