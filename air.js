@@ -3,14 +3,14 @@ var margin = {top:6,bottom:6,left:6,right:6};
 var svg = d3.select("#chart").append("svg")
       .attr("width", 960 + margin.right + margin.left)
       .attr("height", 432 + margin.left + margin.right).append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+      .attr("transform", "translate(" + 900 + "," + 0 + ")");
 
 var width = 432,
       height = 432,
       start = 0,
       end = 2.35,
       numSpirals = 2
-var radius = 300 / 2;
+var radius = 270 / 2;
 
 var color_pie = d3.scaleOrdinal()
     .range(["#ECDB84", "#EEC85D", "#EEA760", "#EA753C"]);
@@ -107,7 +107,7 @@ function drawair(Month){
       .style("stroke", "none")
       .on("mouseover",function(d,i){ 
           d3.select(this).style('fill','yellow');
-          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia,d.monitor,d.datetime);})
       .on("mouseleave", function(d){ 
           d3.select(this).style('fill',function(d){return color(d.group);})})
       .on("mousemove", function(d){
@@ -204,7 +204,7 @@ function drawair(Month){
       .style("stroke", "none")
       .on("mouseover",function(d,i){ 
           d3.select(this).style('fill','yellow');
-          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia,d.monitor,d.datetime);})
       .on("mouseleave", function(d){ 
           d3.select(this).style('fill',function(d){return color(d.group);})})
       .on("mousemove", function(d){
@@ -232,7 +232,7 @@ function drawair(Month){
       .attr("xlink:href", "#spiral")
       .style("fill", "grey")
       .on("mouseover",function(d,i){ 
-          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+           drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia,d.monitor,d.datetime);})
       .on("mousemove", function(d){
                 tooltip
                 .style("left", d3.event.pageX - 50 + "px")
@@ -304,7 +304,7 @@ function drawair(Month){
       .attr("transform", function(d){
         return "rotate(" + d.a + "," + d.x  + "," + d.y + ")"; })
       .on("mouseover",function(d,i){ 
-          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia);})
+          drawpie(d.Methylosmolene,d.Chlorodinine,d.AGOC_3A,d.Appluimonia,d.monitor,d.datetime);})
       .on("mousemove", function(d){
                 tooltip
                 .style("left", d3.event.pageX - 50 + "px")
@@ -331,12 +331,20 @@ function drawair(Month){
       .attr("startOffset", function(d){
         return ((d.linePer / spiralLength) * 100) + "%";})
     })
+    d3.select("#chart").append("text")
+  .attr("x", 140)
+  .attr("y",height-255)
+  .attr("dy", "0.25em")
+  .style("font-size", "12px")
+  .style("text-anchor", "start")
+  .text("Total Chemicals in different Sensors in December")
     
   } 
 
   }
-  function drawpie(a,b,c,d)
+  function drawpie(a,b,c,d,e,f)
   {
+    console.log(e);
     d3.select("#chart").selectAll(".arc").remove();
     d3.select("#chart").selectAll(".text1").remove();
     d3.select("#chart").selectAll(".rect1").remove();
@@ -354,38 +362,47 @@ function drawair(Month){
     g.append("path")
       .attr("d", arc)
       .style("fill", function(d) { return color_pie(d.data); })
-      .attr("transform", "translate(" + (600) + "," + (216) + ")");
+      .attr("transform", "translate(" + (570) + "," + (216) + ")");
     g.append("text")
       .classed("class","text_data")
       .attr("transform", function(d) { var f=labelArc.centroid(d);
-        return "translate(" + (f[0]+600)+","+(f[1]+216) + ")"; })
+        return "translate(" + (f[0]+570)+","+(f[1]+216) + ")"; })
       .attr("dy", ".35em")
       .text(function(d) { return d.data.toFixed(2); });
+  
   for(i=0;i<4;i++)
   {
   d3.select("#chart").append("rect")
-  .attr("x", width-110)
-  .attr("y",height-160-13*i)
+  .attr("x", 700)
+  .attr("y",height-150-26*i)
   .attr("width", 11)
   .attr("height", 11)
   .classed("class","rect1")
   .style("fill", color_pie(data[i]));
 
 g.append("text")
-  .attr("x", width-90)
-  .attr("y",height-155-12*i)
+  .attr("x", 720)
+  .attr("y",height-150-24*i)
   .attr("dy", "0.35em")
   .style("text-anchor", "start")
   .classed("class","text2")
   .text(name[i])
 
  g.append("text")
-  .attr("x", width+530)
-  .attr("y",height-155-12*i)
+  .attr("x", 720)
+  .attr("y",height-140-24*i)
   .attr("dy", "0.35em")
+  .style("text-anchor", "start")
   .classed("class","text1")
   .text(percent[i].toFixed(2)+"%")
 }
+g.append("text")
+  .attr("x", 455)
+  .attr("y",height-245)
+  .attr("dy", "0.35em")
+  .style("text-anchor", "start")
+  .classed("class","text2")
+  .text("Chemical Composition Of Sensor "+e+" In "+f)
    
   }
   
